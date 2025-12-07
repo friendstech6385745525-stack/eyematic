@@ -51,6 +51,11 @@
         }
     </style>
 </head>
+@extends('layouts.app')
+
+@section('title', 'Login')
+
+@section('content')
 
 <body>
 
@@ -115,5 +120,4 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-</body>
-</html>
+@endsection

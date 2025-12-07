@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
         session()->forget('cart');
     }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**

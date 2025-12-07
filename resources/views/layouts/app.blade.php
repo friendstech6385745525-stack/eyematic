@@ -17,6 +17,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    @auth
     <li class="nav-item">
     <a class="btn btn-primary ms-3" href="{{ route('eye_test.form') }}">
         Eye Test Booking
@@ -59,12 +60,7 @@
             </ul>
         </ul>
 
-  <li class="nav-item">
-    <a class="btn btn-success ms-2"
-       href="https://wa.me/6385745525" target="_blank">
-        <i class="bi bi-whatsapp"></i> WhatsApp
-        </a>
-        </li>
+
                 <form class="d-flex ms-lg-3 mt-2 mt-lg-0" action="{{ route('products.index') }}" method="GET" role="search">
         <input
             class="form-control me-2"
@@ -75,7 +71,14 @@
             aria-label="Search">
         <button class="btn btn-outline-light" type="submit">Search</button>
         </form>
+        @endauth
 
+        <li class="nav-item">
+    <a class="btn btn-success ms-2"
+       href="https://wa.me/6385745525" target="_blank">
+        <i class="bi bi-whatsapp"></i> WhatsApp
+        </a>
+        </li>
       <ul class="navbar-nav ms-auto">
         @auth
           @if(auth()->user()->role === 'vendor')
