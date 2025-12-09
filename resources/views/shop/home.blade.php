@@ -36,6 +36,58 @@
     </div>
 </div>
 
+@php
+    $sections = \App\Models\HomepageSection::orderBy('position')->get();
+@endphp
+
+@foreach($sections as $sec)
+
+    {{-- HEADER SECTION --}}
+    @if($sec->section_key == 'header_banner')
+        <div class="hero">
+            <div class="image-slider-container">
+    <div class="image-slider">
+        @foreach($sec->images as $img)
+            <div class="slider-item">
+                <img src="{{ asset('storage/'.$img) }}" alt="" />
+            </div>
+        @endforeach
+    </div>
+</div>
+
+            <h1>{{ $sec->title }}</h1>
+            <p>{{ $sec->subtitle }}</p>
+        </div>
+    @endif
+
+    {{-- ABOUT SECTION --}}
+    @if($sec->section_key == 'about')
+        <section class="container my-5">
+            <h2>{{ $sec->title }}</h2>
+            <p>{{ $sec->description }}</p>
+            @if($sec->image)
+                <img src="{{ asset('storage/'.$sec->image) }}" width="300">
+            @endif
+        </section>
+    @endif
+
+    {{-- SERVICES with LIST --}}
+    @if($sec->section_key == 'services')
+        <section class="container my-5">
+            <h2>{{ $sec->title }}</h2>
+            <ul>
+                @foreach($sec->data as $item)
+                    <li>{{ $item }}</li>
+                @endforeach
+            </ul>
+        </section>
+    @endif
+
+@endforeach
+
+{{-- LATEST UPDATES USING shop_content
+@include('partials.latest-updates') --}}
+
 
 <div class="container my-5 latest-updates">
     <h3 class="mb-4">Latest Updates</h3>
@@ -90,4 +142,26 @@
     object-fit: cover;
 }
 
+.image-slider-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 0;
+}
+
+.image-slider {
+    display: inline-flex;
+    gap: 15px;
+}
+
+.slider-item img {
+    width: 300px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.slider-item img:hover {
+    transform: scale(1.05);
+}
 </style>

@@ -38,13 +38,13 @@ class CartController extends Controller
                             ->first();
 
                 if ($cartItems) {
-                    $cartItems->quantity += $quantity;
+                    $cartItems->qty += $quantity;
                     $cartItems->save();
                 } else {
                     CartItem::create([
                         'user_id' => auth()->id(),
                         'product_id' => $product->id,
-                        'quantity' => $quantity,
+                        'qty' => $quantity,
                         'price' => $product->price,
                     ]);
                 }
@@ -53,12 +53,12 @@ class CartController extends Controller
             else {
                 $cartItems = session()->get('cart', []);
                 if (isset($cartItems[$product->id])) {
-                    $cartItems[$product->id]['quantity'] += $quantity;
+                    $cartItems[$product->id]['qty'] += $quantity;
                 } else {
                     $cartItems[$product->id] = [
                         'name' => $product->name,
                         'price' => $product->price,
-                        'quantity' => $quantity,
+                        'qty' => $quantity,
                         'image' => $product->images[0] ?? null,
                     ];
                 }

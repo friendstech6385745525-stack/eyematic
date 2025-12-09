@@ -7,7 +7,7 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin\{
     ProductController as AdminProductController,
-    ShopContentController, MessageAdminController, DashboardController, BrandController, CategoryController, OrderAdminController, EyeTestBookingAdminController
+    ShopContentController, MessageAdminController, DashboardController, BrandController, CategoryController, OrderAdminController, EyeTestBookingAdminController, HomepageSectionController
 };
 use App\Http\Controllers\Vendor\ProductController as VendorProductController;
 use Laravel\Socialite\Facades\Socialite;
@@ -116,6 +116,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth','role:admin,superadmi
     Route::get('/eye-test', [EyeTestBookingAdminController::class, 'index'])->name('eye_test.index');
     Route::post('/eye-test/{booking}/status', [EyeTestBookingAdminController::class, 'updateStatus'])->name('eye_test.updateStatus');
     Route::delete('/eye-test/{booking}', [EyeTestBookingAdminController::class, 'destroy'])->name('eye_test.destroy');
+
+
+    // Home Page Sections
+    Route::get('/home-sections', [HomepageSectionController::class, 'index'])->name('home.sections.index');
+    Route::get('/home-sections/create', [HomepageSectionController::class, 'create'])->name('home.sections.create');
+    Route::post('/home-sections/store', [HomepageSectionController::class, 'store'])->name('home.sections.store');
+    Route::get('/home-sections/{section}/edit', [HomepageSectionController::class, 'edit'])->name('home.sections.edit');
+    Route::post('/home-sections/{section}/update', [HomepageSectionController::class, 'update'])->name('home.sections.update');
+    Route::delete('/home-sections/{section}/delete', [HomepageSectionController::class, 'destroy'])->name('home.sections.delete');
 
 });
 
