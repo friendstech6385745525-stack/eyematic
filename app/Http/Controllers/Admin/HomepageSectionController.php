@@ -39,7 +39,7 @@ class HomepageSectionController extends Controller
         return redirect()->route('admin.home.sections.index')->with('success', 'Section added successfully!');
     }
 */
-    public function store(Request $request)
+    public function store(Request $request, HomepageSection $section)
 {
     $data = $request->validate([
         'section_key' => 'required',
@@ -48,12 +48,39 @@ class HomepageSectionController extends Controller
         'description' => 'nullable|string',
         'images.*' => 'nullable|image',
         'position' => 'required|integer',
+        'background_image' => 'nullable|image|mimes:jpg,jpeg,png,webp',
+        'background_video' => 'nullable|mimetypes:video/mp4,video/avi,video/mov,video/wmv',
     ]);
+
+    if ($request->hasFile('background_image')) {
+
+        // delete old
+        if ($section->background_image) {
+            Storage::disk('public')->delete($section->background_image);
+        }
+
+        // store new
+        $data['background_image'] = $request
+            ->file('background_image')
+            ->store('home_sections/backgrounds', 'public');
+    }
+
+    /* ✅ BACKGROUND VIDEO */
+    if ($request->hasFile('background_video')) {
+
+        if ($section->background_video) {
+            Storage::disk('public')->delete($section->background_video);
+        }
+
+        $data['background_video'] = $request
+            ->file('background_video')
+            ->store('home_sections/videos', 'public');
+    }
 
     $imagesPath = [];
     if ($request->hasFile('images')) {
         foreach ($request->file('images') as $file) {
-            $imagesPath[] = $file->store('home_sections', 'public');
+            $imagesPath[] = $file->store('home_sections/', 'public');
         }
     }
 
@@ -98,7 +125,42 @@ public function update(Request $request, HomepageSection $section)
         'description' => 'nullable|string',
         'images.*' => 'nullable|image',
         'position' => 'required|integer',
+        'background_image' => 'nullable|image',
+        'background_video' => 'nullable|mimetypes:video/mp4,video/avi,video/mov,video/wmv',
     ]);
+if ($request->hasFile('background_image')) {
+
+        // delete old
+        if ($section->background_image) {
+            Storage::disk('public')->delete($section->background_image);
+        }
+
+        // store new
+        $data['background_image'] = $request
+            ->file('background_image')
+            ->store('home_sections/background', 'public');
+    }
+
+    /* ✅ BACKGROUND VIDEO */
+    if ($request->hasFile('background_video')) {
+
+        if ($section->background_video) {
+            Storage::disk('public')->delete($section->background_video);
+        }
+
+        $data['background_video'] = $request
+            ->file('background_video')
+            ->store('home_sections/videos', 'public');
+    }
+
+    /*if ($request->hasFile('images')) {
+        $images = [];
+        foreach ($request->file('images') as $img) {
+            $images[] = $img->store('home/scroll_images', 'public');
+        }
+        $data['images'] = $images;
+    }*/
+
 
     $images = $section->images ?? [];
 
@@ -112,7 +174,7 @@ public function update(Request $request, HomepageSection $section)
 
     $section->update($data);
 
-    return back()->with('success', 'Section updated!');
+    return redirect()->route('admin.home.sections.index')->with('success', 'Section updated!');
 }
 
     public function destroy(HomepageSection $section)

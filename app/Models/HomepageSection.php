@@ -13,7 +13,9 @@ class HomepageSection extends Model
         'description',
         'images',
         'data',
-        'position'
+        'position',
+        'background_image',
+        'background_video'
     ];
 
     protected $casts = [

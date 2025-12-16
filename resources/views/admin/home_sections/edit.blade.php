@@ -32,15 +32,37 @@
         </div> --}}
 
         @if($section->images)
-        <div class="mb-3">
-            <label>Current Images</label>
-            <div style="display:flex;overflow-x:auto;gap:10px;padding:10px;border:1px solid #ddd;border-radius:5px;">
-                @foreach($section->images as $img)
-                    <img src="{{ asset('storage/'.$img) }}" height="120" style="border-radius:8px;">
-                @endforeach
+        {{-- Replace / Add Scroll Images --}}
+            <div class="mb-3">
+                <label class="form-label">Change Scroll Images</label>
+                <input type="file" name="images[]" multiple class="form-control">
+                <small class="text-muted">Multiple images (scroll view)</small>
             </div>
-        </div>
-        @endif
+
+            {{-- Background Image --}}
+            <div class="mb-3">
+                <label class="form-label">Background Image</label>
+                <input type="file" name="background_image" class="form-control">
+
+                @if($section->background_image)
+                    <img src="{{ asset('storage/'.$section->background_image) }}"
+                        class="mt-2 rounded"
+                        style="max-height:120px;">
+                @endif
+            </div>
+
+            {{-- Background Video --}}
+            <div class="mb-3">
+                <label class="form-label">Background Video (MP4)</label>
+                <input type="file" name="background_video" class="form-control">
+
+                @if($section->background_video)
+                    <video class="mt-2 rounded" width="200" muted autoplay loop>
+                        <source src="{{ asset('storage/'.$section->background_video) }}" type="video/mp4">
+                    </video>
+                @endif
+            </div>
+@endif
 
 
         <div class="mb-3">

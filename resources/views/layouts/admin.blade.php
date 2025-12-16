@@ -85,6 +85,7 @@
     <a href="{{ route('admin.messages.index') }}" class="{{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">💬 Messages</a>
     <a href="{{ route('admin.shop_content.index') }}" class="{{ request()->routeIs('admin.shop_content.*') ? 'active' : '' }}">🛍️ Shop Content</a>
     <a href="{{ route('admin.eye_test.index') }}" class="{{ request()->routeIs('admin.eye_test.*') ? 'active' : '' }}">👁️ Eye Test Bookings</a>
+    <a href="{{ route('admin.home.sections.index') }}" class="{{ request()->routeIs('admin.home.sections.*') ? 'active' : '' }}">🏠 Home Sections</a>
 </div>
 
 {{-- Main content --}}

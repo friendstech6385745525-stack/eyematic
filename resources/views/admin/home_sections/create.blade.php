@@ -15,7 +15,7 @@
                 <option value="">Select Section</option>
                 <option value="header_banner">Header Banner</option>
                 <option value="about">About Section</option>
-                <option value="latest_updates">Latest Updates</option>
+                <option value="brands">Brands</option>
                 <option value="services">Services</option>
                 <option value="offers">Offers / Promo</option>
                 <option value="testimonial">Testimonial</option>
@@ -40,10 +40,19 @@
 
         <!-- MULTI IMAGE UPLOAD -->
         <div class="mb-3">
-            <label>Upload Images (Multiple)</label>
+            <label>Upload Multiple Images (for scroll view)</label>
             <input type="file" name="images[]" class="form-control" multiple>
         </div>
 
+        <div class="mb-3">
+            <label>Background Image (optional)</label>
+            <input type="file" name="background_image" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Background Video (MP4) (optional)</label>
+            <input type="file" name="background_video" class="form-control">
+        </div>
         <!-- POSITION -->
         <div class="mb-3">
             <label>Display Position</label>
