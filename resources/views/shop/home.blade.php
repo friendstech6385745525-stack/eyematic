@@ -28,9 +28,6 @@
             <source src="{{ asset('storage/'.$sec->background_video) }}" type="video/mp4">
         </video>
     @endif
-
-
-
     <div class="container">
         <div class="row align-items-center">
             <!-- Left Content -->
@@ -67,6 +64,38 @@
     @endif
 @endforeach
 
+@foreach($sections as $sec)
+@if($sec->section_key === 'brands')
+
+<section class="brand-section my-5">
+    <div class="container">
+        <h2 class="fw-bold text-center mb-3">{{ $sec->title }}</h2>
+        <p class="text-center text-muted mb-4">{{ $sec->description }}</p>
+    </div>
+
+    <div class="brand-slider">
+        <div class="brand-track">
+            {{-- First loop --}}
+            @foreach($sec->images as $img)
+                <div class="brand-item">
+                    <img src="{{ asset('storage/'.$img) }}" alt="Brand">
+                </div>
+            @endforeach
+
+            {{-- Duplicate for infinite scroll --}}
+            @foreach($sec->images as $img)
+                <div class="brand-item">
+                    <img src="{{ asset('storage/'.$img) }}" alt="Brand">
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+@endif
+@endforeach
+
+
 <div class="container mb-5">
     <h2 class="mb-4">Products</h2>
 
@@ -96,22 +125,72 @@
 </div>
 
 @foreach($sections as $sec)
-    @if($sec->section_key == 'services')
-        @foreach($sec->images as $img)
-            <div class="stack-card" style="z-index: {{ 100 - $loop->index }};">
-                <div class="stack-image">
-                    <img src="{{ asset('storage/'.$img) }}">
+@if($sec->section_key === 'offers')
+
+
+<section class="promo-section"
+    style="background-image:url('{{ $sec->background_image ? asset('storage/'.$sec->background_image) : '' }}')">
+
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+                <span class="promo-badge">{{ $sec->subtitle }}</span>
+                <h2 class="promo-title">{{ $sec->title }}</h2>
+                <p class="promo-desc">{{ $sec->description }}</p>
+
+                @if($sec->button_text)
+                    <a href="{{ $sec->button_link }}" class="btn btn-warning btn-lg">
+                        {{ $sec->button_text }}
+                    </a>
+                @endif
+            </div>
+
+            <div class="col-lg-6 text-center">
+                @if(!empty($sec->images))
+                    <img src="{{ asset('storage/'.$sec->images[0]) }}"
+                         class="promo-img">
+                @endif
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@endif
+@endforeach
+
+
+@foreach($sections as $sec)
+@if($sec->section_key === 'services')
+
+<section class="services-stack container my-5">
+
+    <h2 class="fw-bold mb-5">{{ $sec->title }}</h2>
+
+    @foreach($sec->images as $index => $img)
+        <div class="service-card"
+             style="z-index: {{ 100 - $index }}; background-image:url('{{ $sec->background_image ? asset('storage/'.$sec->background_image) : '' }}')">
+
+            <div class="service-inner">
+                <!-- Image -->
+                <div class="service-img">
+                    <img src="{{ asset('storage/'.$img) }}" alt="">
                 </div>
 
-                <div class="stack-content">
-                    <h2>{{ $sec->title }}</h2>
+                <!-- Content -->
+                <div class="service-content">
+                    <h4>{{ $sec->subtitle }}</h4>
                     <p>{{ $sec->description }}</p>
                 </div>
             </div>
-        @endforeach
-    </div>
+
+        </div>
+    @endforeach
+
 </section>
-        @endif
+
+@endif
 @endforeach
 
 @foreach($sections as $sec)
@@ -211,7 +290,6 @@
     </div>
 </div>
 
-<hr class="my-5">
 
 <h3>Contact Us</h3>
 <form method="POST" action="{{ route('message.store') }}">
@@ -226,7 +304,45 @@
   </div>
   <button class="btn btn-success">Send Message</button>
 </form>
+
+<hr class="my-5">
+
+<footer class="site-footer" style="background-image:url('{{ $sec->background_image ? asset('storage/'.$sec->background_image) : '' }}')">
+    <div class="container">
+        <div class="row">
+
+@foreach($sections as $sec)
+@if($sec->section_key === 'footer')
+
+            <div class="col-md-4">
+                
+                @if(!empty($sec->images))
+                    <img src="{{ asset('storage/'.$sec->images[0]) }}"
+                         class="footer-logo mb-3">
+                @endif
+                <p>{{ $sec->description }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <p>{{ $sec->title }}</p>
+                <p>{{ $sec->subtitle }}</p>
+            </div>
+
+            <div class="col-md-4">
+                <h5>Follow Us</h5>
+                {!! $sec->data !!}
+            </div>
+
+@endif
+@endforeach
+
+        </div>
+    </div>
+</footer>
+
 @endsection
+
 
 
 
@@ -471,103 +587,177 @@ background-color: transparent !important;
     color: #666;
 }
 
-/* ===== SERVICES AUTO SCROLL ===== */
-
-.services-scroll-section {
+.services-stack {
     position: relative;
-    height: 160vh;              /* important for scroll space */
-    background: #f6f7f9;
-    padding-top: 100px;
-}
-
-.services-wrapper {
-    position: sticky;
-    top: 120px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    max-width: 900px;
-    margin: auto;
 }
 
 .service-card {
-    background: #ffffff;
-    border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-    transform: translateY(0);
-}
-
-/* stacked look */
-.service-card:not(:first-child) {
-    margin-top: -80px;
-}
-
-.stack-scroll-section {
-    height: 220vh; /* scroll space */
-    background: #f6f7f9;
-    padding-top: 120px;
-}
-
-.stack-wrapper {
-    position: sticky;
-    flex-shrink: 0;
-    object-fit: cover;
-    top: 120px;
-    max-width: 1100px;
-    margin: auto;
-}
-
-.stack-card {
-    display: flex;
-    gap: 300px;
-    background: white;
-    border-radius: 28px;
-    padding: 40px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
-    margin-bottom: 10px;   /* overlap */
     position: relative;
-    flex-direction: column;
-    overflow: auto;
+    margin-bottom: 0px;
+    transition: transform .3s ease;
 }
 
-.stack-card:last-child {
-    margin-bottom: 0;
+.service-card:hover {
+    transform: translateY(-8px);
 }
 
-.stack-image img {
-    width: 260px;
+.service-inner {
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 25px 50px rgba(0,0,0,.12);
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+    align-items: center;
+}
+
+.service-img img {
+    width: 220px;
     height: 180px;
     object-fit: cover;
-    border-radius: 18px;
+    border-radius: 20px;
 }
 
-.stack-content h2 {
-    font-size: 28px;
-    margin-bottom: 12px;
+.service-content h4 {
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.service-content p {
+    color: #666;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .service-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .service-img img {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+.brand-section {
+    overflow: hidden;
+    background: #fff;
+}
+
+.brand-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.brand-track {
+    display: flex;
+    width: max-content;
+    animation: brandScroll 25s linear infinite;
+}
+
+.brand-slider:hover .brand-track {
+    animation-play-state: paused;
+}
+
+.brand-item {
+    flex: 0 0 auto;
+    padding: 20px 40px;
+}
+
+.brand-item img {
+    height: 70px;
+    width: auto;
+    filter: grayscale(0%);
+    opacity: .7;
+    transition: all .3s ease;
+}
+
+.brand-item img:hover {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+@keyframes brandScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.promo-section {
+    padding: 80px 0;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    color: #fff;
+}
+
+.promo-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+}
+
+.promo-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.promo-badge {
+    background: #ffc107;
+    color: #000;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.promo-title {
+    font-size: 42px;
+    margin: 15px 0;
+}
+
+.promo-desc {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.promo-img {
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.4);
+}
+
+.site-footer {
+    background: #121212;
+    color: #121212;
+    padding: 60px 0 30px;
+}
+
+.site-footer h5 {
+    color: #121212;
+    margin-bottom: 15px;
+}
+
+.footer-logo {
+    max-height: 60px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #121212;
+    font-size: 14px;
 }
 
 </style>
-
-{{--<script>
-window.addEventListener('scroll', () => {
-    const section = document.querySelector('.services-scroll-section');
-    const wrapper = document.querySelector('.services-wrapper');
-
-    if (!section || !wrapper) return;
-
-    const rect = section.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-
-    if (rect.top <= windowHeight && rect.bottom >= 0) {
-        const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-        const move = Math.min(0, -progress * 200);
-
-        wrapper.style.transform = `translateY(${move}px)`;
-    }
-});
-</script>
---}}
 
 <script>
 window.addEventListener('scroll', () => {

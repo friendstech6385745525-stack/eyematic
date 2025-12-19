@@ -37,7 +37,10 @@ class CheckoutController extends Controller
         // 3. PAYMENT PAGE
     // -------------------------
     public function payment(Order $order)
+
     {
+
+
         return view('shop.checkout.payment', compact('order'));
     }
 
@@ -159,9 +162,11 @@ class CheckoutController extends Controller
             : 'shop.orders.show', compact('order'));
     }
 
-    public function buyNow(Product $product)
+    public function buyNow(Product $product,Request $request)
     {
+        // dd($request->all());
         $user = auth()->user();
+        $qty=$request->qty;
 
         // Create order
         $order = Order::create([
@@ -181,7 +186,8 @@ class CheckoutController extends Controller
         ]);
 
         // Redirect to payment page
-        return redirect()->route('checkout.payment', $order->id)
+        return redirect()->route('checkout.payment', [$order->id,'qty'=>$qty])
                         ->with('success', 'You are checking out 1 item.');
     }
 }
+

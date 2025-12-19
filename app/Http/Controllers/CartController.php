@@ -140,7 +140,7 @@ class CartController extends Controller
         ->where('user_id', Auth::id())
         ->firstOrFail();
 
-    $cartItem->delete();
+    $cartItems->delete();
 
     return back()->with('message', 'Item removed from cart.');
 }
